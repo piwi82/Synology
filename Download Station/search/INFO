@@ -1,0 +1,10 @@
+{
+	"name": "cpasbien",
+	"displayname": "cPASbien",
+	"description": "C'est pas bien, mais alors pas du tout",
+	"version": "0.8",
+	"site": "http://www.cpasbien.pe/",
+	"module": "cpasbien.php",
+	"type": "search",
+	"class": "CPasBien"
+}
