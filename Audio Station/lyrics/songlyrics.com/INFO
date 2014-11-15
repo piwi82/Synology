@@ -1,0 +1,10 @@
+{
+    "name": "songlyrics",
+    "displayname": "SongLyrics.com",
+    "description": "Know the words",
+    "version": "0.1",
+	"site": "http://www.songlyrics.com/",
+    "module": "songlyrics.php",
+    "type": "lyric",
+    "class": "SongLyrics"
+}
