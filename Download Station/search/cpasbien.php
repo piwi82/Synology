@@ -1,13 +1,12 @@
 <?php
 
 /**
- * Download Station search module from CPasBien.pe
  * Documentation : http://download.synology.com/download/ds/userguide/DLM_Guide.pdf
  */
 
 // Uncomment the following block to test the code
 
-header("Content-Type: text/plain; charset=utf-8");
+/*header("Content-Type: text/plain; charset=utf-8");
 class Plugin{
 private $i = 0;
 public function __call($name,$args){
@@ -17,11 +16,12 @@ case 'addJsonResults':
 case 'addResult':
 case 'addRSSResults':
 default:
-	var_dump($args);
+	echo "#".($this->i ++)."\t";
+	var_dump($args[2]);
 }}}
 $curl = curl_init();
 $cpb = new CPasBien;
-$cpb->prepare($curl,"hannibal");
+$cpb->prepare($curl,"the walking dead");
 $return = curl_exec($curl);
 curl_close($curl);
 echo $cpb->parse(new Plugin,$return),"\n";
@@ -37,7 +37,7 @@ const PROTOCOL = "http";
 const HOST = "www.cpasbien.pe";
 const URL = "%s://%s/recherche/%s/page-%s";
 const USER_AGENT = "Mozilla/5.0 (Windows NT 6.1; WOW64; Trident/7.0; rv:11.0) like Gecko";
-const REG_RESULT = '#<a[^\r\n]*? href="(?P<page>[^"]+)" title="(?P<category>[^\r\n]+)<br/>[^<]+<br/>(?P<date>(?:[0-9]{2}/){2}[0-9]{4})">\s*<img src="[^"]+" ?/>\s*(?P<title>[^\s][^\r\n]+?[^\s])\s*</a>\s*</td>\s*<td[^>]*>(?P<size>[^<]+)</td>\s*<td[^>]*><img src="[^"]+" ?/>\s*<span[^>]*>(?P<seeds>[^<]+)</span></td>\s*<td[^>]*><img src="[^"]+" ?/>(?P<leechs>[^<]+)</td>#is';
+const REG_RESULT = '#<a\s+href="(?P<page>[^"]+)"\s+title="(?P<category>[^<]+)<br(\s*/)?>[^<]+(?P<date>(?:[0-9]{2}[^0-9]){2}[0-9]{4})"(?:\s+[a-z]+="[^"]*")*>(?P<title>[^<]+)</a><div(?:\s+[a-z]+="[^"]*")*>(?P<size>[^<]+)(?:\&nbsp;)+?</div><div(?:\s+[a-z]+="[^"]*")*><span(?:\s+[a-z]+="[^"]*")*>(?P<seeds>[0-9]+)</span></div><div(?:\s+[a-z]+="[^"]*")*>(?P<leechs>[0-9]+)</div>#i';
 const REG_DOWNLOAD_MATCH = '#^(?P<host>http://[^/]+/).*?(?P<file>[^/]+)\.html$#';
 const REG_DOWNLOAD_REPLACE = '${host}_torrents/${file}.torrent';
 const REG_SIZE = '#^(?P<size>[0-9]+\.[0-9]+)\s*(?P<unit>[KMGTP]?o)$#i';
@@ -45,7 +45,7 @@ const SIZE_POWER_LIMIT = 2;
 private static $size = array('o','ko','mo','go','to','po','eo','zo','yo');
 const REG_DATETIME_MATCH = '#^(?P<day>[0-9]{2})/(?P<month>[0-9]{2})/(?P<year>[0-9]{4})$#';
 const REG_DATETIME_REPLACE = '${year}-${month}-${day} 00:00:00';
-const REG_PAGE = '#<a href="[^"]+page\-(?P<page>[0-9]+)">.+?</a>\s*?</div>#';
+const REG_PAGE = '#<a href="[^"]+page\-(?P<page>[0-9]+)"><strong>Suiv</strong></a>#i';
 
 public function __construct(){}
 
@@ -81,7 +81,7 @@ private function _parse($response){
 			);
 			self::$count ++;
 		}
-	if (preg_match_all(self::REG_PAGE,$response,$m,PREG_SET_ORDER)>0){
+	if (preg_match(self::REG_PAGE,$response,$m)>0){
 		if ($m['page']>=self::PAGE_MAX)
 			return self::$count;
 		$curl = curl_init();
