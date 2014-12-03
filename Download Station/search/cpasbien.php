@@ -17,7 +17,7 @@ case 'addResult':
 case 'addRSSResults':
 default:
 	echo "#".($this->i ++)."\t";
-	var_dump($args[2]);
+	var_dump($args);
 }}}
 $curl = curl_init();
 $cpb = new CPasBien;
@@ -27,6 +27,11 @@ curl_close($curl);
 echo $cpb->parse(new Plugin,$return),"\n";
 /**/
 
+
+
+/**
+ * CPasBien
+ */
 class CPasBien{
 
 private static $query;
@@ -37,15 +42,15 @@ const PROTOCOL = "http";
 const HOST = "www.cpasbien.pe";
 const URL = "%s://%s/recherche/%s/page-%s";
 const USER_AGENT = "Mozilla/5.0 (Windows NT 6.1; WOW64; Trident/7.0; rv:11.0) like Gecko";
-const REG_RESULT = '#<a\s+href="(?P<page>[^"]+)"\s+title="(?P<category>[^<]+)<br(\s*/)?>[^<]+(?P<date>(?:[0-9]{2}[^0-9]){2}[0-9]{4})"(?:\s+[a-z]+="[^"]*")*>(?P<title>[^<]+)</a><div(?:\s+[a-z]+="[^"]*")*>(?P<size>[^<]+)(?:\&nbsp;)+?</div><div(?:\s+[a-z]+="[^"]*")*><span(?:\s+[a-z]+="[^"]*")*>(?P<seeds>[0-9]+)</span></div><div(?:\s+[a-z]+="[^"]*")*>(?P<leechs>[0-9]+)</div>#i';
-const REG_DOWNLOAD_MATCH = '#^(?P<host>http://[^/]+/).*?(?P<file>[^/]+)\.html$#';
-const REG_DOWNLOAD_REPLACE = '${host}_torrents/${file}.torrent';
-const REG_SIZE = '#^(?P<size>[0-9]+\.[0-9]+)\s*(?P<unit>[KMGTP]?o)$#i';
+const REG_RESULT = '#<a\s+href="(?<page>[^"]+)"\s+title="(?<category>[^<]+)<br(\s*/)?>[^<]+(?<date>(?:[0-9]{2}[^0-9]){2}[0-9]{4})"(?:\s+[a-z]+="[^"]*")*>(?<title>[^<]+)</a><div(?:\s+[a-z]+="[^"]*")*>(?<size>[^<]+)(?:\&nbsp;)+?</div><div(?:\s+[a-z]+="[^"]*")*><span(?:\s+[a-z]+="[^"]*")*>(?<seeds>[0-9]+)</span></div><div(?:\s+[a-z]+="[^"]*")*>(?<leechs>[0-9]+)</div>#i';
+const REG_DOWNLOAD_MATCH = '#^(?<host>http://[^/]+/).*?(?<file>[^/]+)\.html$#';
+const REG_DOWNLOAD_REPLACE = '${1}telecharge/${2}.torrent';
+const REG_SIZE = '#^(?<size>[0-9]+\.[0-9]+)\s*(?<unit>[KMGTP]?o)$#i';
 const SIZE_POWER_LIMIT = 2;
 private static $size = array('o','ko','mo','go','to','po','eo','zo','yo');
-const REG_DATETIME_MATCH = '#^(?P<day>[0-9]{2})/(?P<month>[0-9]{2})/(?P<year>[0-9]{4})$#';
+const REG_DATETIME_MATCH = '#^(?<day>[0-9]{2})/(?<month>[0-9]{2})/(?<year>[0-9]{4})$#';
 const REG_DATETIME_REPLACE = '${year}-${month}-${day} 00:00:00';
-const REG_PAGE = '#<a href="[^"]+page\-(?P<page>[0-9]+)"><strong>Suiv</strong></a>#i';
+const REG_PAGE = '#<a href="[^"]+page\-(?<page>[0-9]+)"><strong>Suiv</strong></a>#i';
 
 public function __construct(){}
 
