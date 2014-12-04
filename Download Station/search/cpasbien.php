@@ -49,7 +49,7 @@ const REG_SIZE = '#^(?<size>[0-9]+\.[0-9]+)\s*(?<unit>[KMGTP]?o)$#i';
 const SIZE_POWER_LIMIT = 2;
 private static $size = array('o','ko','mo','go','to','po','eo','zo','yo');
 const REG_DATETIME_MATCH = '#^(?<day>[0-9]{2})/(?<month>[0-9]{2})/(?<year>[0-9]{4})$#';
-const REG_DATETIME_REPLACE = '${year}-${month}-${day} 00:00:00';
+const REG_DATETIME_REPLACE = '${3}-${2}-${1} 00:00:00';
 const REG_PAGE = '#<a href="[^"]+page\-(?<page>[0-9]+)"><strong>Suiv</strong></a>#i';
 
 public function __construct(){}
