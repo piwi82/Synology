@@ -2,8 +2,8 @@
 	"name": "cpasbien",
 	"displayname": "CpasBien",
 	"description": "C'est pas bien, mais alors pas du tout",
-	"version": "1.1",
-	"site": "http://www.cpasbien.pe/",
+	"version": "1.2",
+	"site": "http://www.cpasbien.pw/",
 	"module": "cpasbien.php",
 	"type": "search",
 	"class": "CPasBien"
