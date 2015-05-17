@@ -5,8 +5,8 @@
  */
 
 // Uncomment the following block to test the code
-
-/*header("Content-Type: text/plain; charset=utf-8");
+/*
+header("Content-Type: text/plain; charset=utf-8");
 class Plugin{
 private $i = 0;
 public function __call($name,$args){
@@ -42,7 +42,7 @@ const PROTOCOL = "http";
 const HOST = "www.cpasbien.pw";
 const URL = "%s://%s/recherche/%s/page-%s";
 const USER_AGENT = "Mozilla/5.0 (Windows NT 6.1; WOW64; Trident/7.0; rv:11.0) like Gecko";
-const REG_RESULT = '#<a\s+href="(?<page>[^"]+)"\s+title="(?<category>[^<]+)<br(\s*/)?>[^<]+(?<date>(?:[0-9]{2}[^0-9]){2}[0-9]{4})"(?:\s+[a-z]+="[^"]*")*>(?<title>[^<]+)</a><div(?:\s+[a-z]+="[^"]*")*>(?<size>[^<]+)(?:\&nbsp;)+?</div><div(?:\s+[a-z]+="[^"]*")*><span(?:\s+[a-z]+="[^"]*")*>(?<seeds>[0-9]+)</span></div><div(?:\s+[a-z]+="[^"]*")*>(?<leechs>[0-9]+)</div>#i';
+const REG_RESULT = '#<a\s+href="(?<page>[^"]+)"\s+title="(?<category>[^<]+)<br(\s*/)?>[^<]+(?<datetime>(?:[0-9]{2}[^0-9]){2}[0-9]{4})"(?:\s+[a-z]+="[^"]*")*>(?<title>[^<]+)</a><div(?:\s+[a-z]+="[^"]*")*>(?<size>[^<]+)(?:\&nbsp;)+?</div><div(?:\s+[a-z]+="[^"]*")*><span(?:\s+[a-z]+="[^"]*")*>(?<seeds>[0-9]+)</span></div><div(?:\s+[a-z]+="[^"]*")*>(?<leechs>[0-9]+)</div>#i';
 const REG_DOWNLOAD_MATCH = '#^(?<host>http://[^/]+/).*?(?<file>[^/]+)\.html$#';
 const REG_DOWNLOAD_REPLACE = '${1}telechargement/${2}.torrent';
 const REG_SIZE = '#^(?<size>[0-9]+\.[0-9]+)\s*(?<unit>[KMGTP]?o)$#i';
@@ -82,7 +82,7 @@ private function _parse($response){
 				self::$count,	// hash (must be unique, not mentioned in official documentation)
 				(int) $m['seeds'],	// seeds
 				(int) $m['leechs'],	// leechs
-				trim($m['category'])	// category
+				trim($m['category'])." (CpasBien)"	// category
 			);
 			self::$count ++;
 		}
