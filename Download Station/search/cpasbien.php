@@ -6,7 +6,7 @@
 
 // Uncomment the following block to test the code
 /*
-header("Content-Type: text/plain; charset=utf-8");
+header("Content-Type: text/plain");
 class Plugin{
 private $i = 0;
 public function __call($name,$args){
