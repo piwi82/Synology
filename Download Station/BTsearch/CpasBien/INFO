@@ -3,7 +3,7 @@
 	"displayname": "CpasBien",
 	"description": "C'est pas bien, mais alors pas du tout",
 	"version": "1.2",
-	"site": "http://www.cpasbien.pw/",
+	"site": "http://www.cpasbien.io/",
 	"module": "cpasbien.php",
 	"type": "search",
 	"class": "CPasBien"

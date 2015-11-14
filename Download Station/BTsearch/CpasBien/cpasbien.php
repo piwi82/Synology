@@ -39,7 +39,7 @@ private static $plugin;
 private static $count = 0;
 const PAGE_MAX = 10;
 const PROTOCOL = "http";
-const HOST = "www.cpasbien.pw";
+const HOST = "www.cpasbien.io";	// 104.28.8.24, 104.28.9.24
 const URL = "%s://%s/recherche/%s/page-%s";
 const USER_AGENT = "Mozilla/5.0 (Windows NT 6.1; WOW64; Trident/7.0; rv:11.0) like Gecko";
 const REG_RESULT = '#<a\s+href="(?<page>[^"]+)"\s+title="(?<category>[^<]+)<br(\s*/)?>[^<]+(?<datetime>(?:[0-9]{2}[^0-9]){2}[0-9]{4})"(?:\s+[a-z]+="[^"]*")*>(?<title>[^<]+)</a><div(?:\s+[a-z]+="[^"]*")*>(?<size>[^<]+)(?:\&nbsp;)+?</div><div(?:\s+[a-z]+="[^"]*")*><span(?:\s+[a-z]+="[^"]*")*>(?<seeds>[0-9]+)</span></div><div(?:\s+[a-z]+="[^"]*")*>(?<leechs>[0-9]+)</div>#i';
