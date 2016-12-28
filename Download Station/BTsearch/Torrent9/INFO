@@ -1,0 +1,10 @@
+{
+	"name": "torrent9",
+	"displayname": "Torrent9",
+	"description": "Torrent9",
+	"version": "0.1",
+	"site": "http://www.torrent9.biz/",
+	"module": "torrent9.php",
+	"type": "search",
+	"class": "Torrent9"
+}
