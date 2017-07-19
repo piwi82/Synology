@@ -3,9 +3,6 @@
 /**
  * Torrent9 BitTorrent search module for Synology Download Station
  * Documentation : http://download.synology.com/download/Document/DeveloperGuide/DLM_Guide.pdf
- * Base URL : http://www.torrent9.cc/search_torrent/the-walking-dead.html
- * Page URL : http://www.torrent9.cc/torrent/the+walking+dead/page-1 (n = p-1)
- * Download : http://www.torrent9.cc/get_torrent/the-walking-dead-s07e08-proper-vostfr-hdtv.torrent
  */
 class Torrent9{
 
