@@ -27,33 +27,33 @@ curl_close($curl);
 echo $t9->parse(new Plugin,$return),"\n";
 /**/
 
-
-
-/**
- * Torrent9
- */
 class Torrent9{
 
 private static $query;
 private static $plugin;
 private static $count = 0;
-const PAGE_MAX = 5;
-const PROTOCOL = "http";
-const HOST = "www.torrent9.biz";	// 104.27.188.252 104.27.189.252 2400:cb00:2048:1::681b:bcfc 2400:cb00:2048:1::681b:bdfc
-const URL = "%s://%s/search_torrent/%s/page-%s";
-const USER_AGENT = "Mozilla/5.0 (Windows NT 6.1; WOW64; Trident/7.0; rv:11.0) like Gecko";
+const PROTOCOL = 'http';
+const HOST = 'www.torrent9.red';
+# http://www.torrent9.red/search_torrent/the+walking+dead/page-1
+const URL = '%s://%s/search_torrent/%s/page-%s';
+const USER_AGENT = 'Mozilla/5.0 (Windows NT 6.1; WOW64; Trident/7.0; rv:11.0) like Gecko';
 const REG_RESULT = '#<tr>\s*<td><i[^>]*></i>\s*<a[^>]* href="(?<page>[^"]+)[^>]*>(?<title>.+)</a></td>[^>]*<td[^>]*>(?<size>[^<]+)</td>\s*<td[^>]*><span class="seed_n?ok">(?<seed>[0-9]+).*</span></td>\s*<td[^>]*>(?<leech>[0-9]+).*</td>\s*</tr>#i';
-const REG_DOWNLOAD_MATCH = '#^/torrent/(?<file>[^/]+)$#';
+# http://www.torrent9.red/torrent/56149/fear-the-walking-dead-s03e09-vostfr-hdtv
+# http://www.torrent9.red/get_torrent/fear-the-walking-dead-s03e09-vostfr-hdtv.torrent
+const REG_DOWNLOAD_MATCH = '#^/torrent/[0-9]+/(?<file>[^/]+)$#';
 const REG_DOWNLOAD_REPLACE = '/get_torrent/${1}.torrent';
-const REG_SIZE = '#^(?<size>[0-9]+\.[0-9]+)\s*(?<unit>[KMGTP]?o)$#i';
+const REG_SIZE = '#^(?<size>[0-9]+(?:\.[0-9]+)?)\s*(?<unit>[KMGTPEZY]?o)$#i';
 const SIZE_POWER_LIMIT = 2;
-private static $size = array('o','ko','mo','go','to','po','eo','zo','yo');
+const SIZE = ['o','ko','mo','go','to','po','eo','zo','yo'];
 const REG_PAGE = '#<a href="[^"]+page\-(?<page>[0-9]+)"><strong>Suiv</strong></a>#i';
 
 public function __construct(){}
 
+/**
+ * Prepare HTTP request
+ */
 public function prepare($curl,$query){
-	self::$query = preg_replace('#\s+#','+',$query);
+	self::$query = preg_replace('#\s+#','+',trim($query));
 	$this->_prepare($curl,0);
 }
 private function _prepare($curl,$page){
@@ -61,8 +61,12 @@ private function _prepare($curl,$page){
 	curl_setopt($curl,CURLOPT_URL,sprintf(self::URL,self::PROTOCOL,self::HOST,self::$query,$page));
 	curl_setopt($curl,CURLOPT_RETURNTRANSFER,true);
 	curl_setopt($curl,CURLOPT_TIMEOUT,30);
+	curl_setopt($curl,CURLOPT_FOLLOWLOCATION,true);
 }
 
+/**
+ * Parse HTTP response body
+ */
 public function parse($plugin,$response){
 	self::$plugin = $plugin;
 	$this->_parse($response);
@@ -75,7 +79,7 @@ private function _parse($response){
 				strip_tags($m['title']),	// title
 				self::PROTOCOL."://".self::HOST.preg_replace(self::REG_DOWNLOAD_MATCH,self::REG_DOWNLOAD_REPLACE,$m['page']),	// download
 				self::torrent9Size($m['size']),	// size
-				"",	// datetime
+				"",	// datetime (not provided in Torrent9 search results)
 				$m['page'],	// page
 				self::$count,	// hash (must be unique, not mentioned in official documentation)
 				(int) $m['seed'],	// seeds
@@ -85,8 +89,6 @@ private function _parse($response){
 			self::$count ++;
 		}
 	if (preg_match(self::REG_PAGE,$response,$m)>0){
-		if ($m['page']>=self::PAGE_MAX)
-			return self::$count;
 		$curl = curl_init();
 		$this->_prepare($curl,$m['page']);
 		$response = curl_exec($curl);
@@ -96,17 +98,14 @@ private function _parse($response){
 	return self::$count;
 }
 
+/**
+ * Converts Torrent9 size to byte size
+ */
 private static function torrent9Size($size){
-	if (preg_match(self::REG_SIZE,strtolower($size),$m)!==1)
+	if (preg_match(self::REG_SIZE,$size,$m)!==1)
 		return 0;
-	$unit = array_search($m['unit'],self::$size);
-	if ($unit===false)
-		return 0;
-	if ($unit<=self::SIZE_POWER_LIMIT)
-		return (int) round($m['size']*pow(2,10*$unit));
-	return round(
-		$m['size']*pow(2,10*self::SIZE_POWER_LIMIT)*pow(1.024,$unit-self::SIZE_POWER_LIMIT)
-	).str_repeat("000",$unit-self::SIZE_POWER_LIMIT);
+	$unit = array_search(strtolower($m['unit']),self::SIZE);
+	return $unit===false ? 0 : round(bcmul($m['size'],bcpow(2,10*$unit)));
 }
 
 }
