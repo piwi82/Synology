@@ -1,9 +1,9 @@
 {
 	"name": "torrent9",
 	"displayname": "Torrent9",
-	"description": "Torrent9",
-	"version": "0.1",
-	"site": "http://www.torrent9.biz/",
+	"description": "torrent9.red",
+	"version": "0.3",
+	"site": "http://www.torrent9.red/",
 	"module": "torrent9.php",
 	"type": "search",
 	"class": "Torrent9"

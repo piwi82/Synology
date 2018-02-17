@@ -1,8 +1,10 @@
 <?php
 
 /**
+ * Torrent9 BitTorrent search module for Synology Download Station
  * Documentation : http://download.synology.com/download/Document/DeveloperGuide/DLM_Guide.pdf
  */
+<<<<<<< HEAD
 
 // Uncomment the following block to test the code
 /*
@@ -27,14 +29,20 @@ curl_close($curl);
 echo $t9->parse(new Plugin,$return),"\n";
 /**/
 
+=======
+>>>>>>> origin/master
 class Torrent9{
 
 private static $query;
 private static $plugin;
 private static $count = 0;
 const PROTOCOL = 'http';
+<<<<<<< HEAD
 const HOST = 'www.torrent9.red';
 # http://www.torrent9.red/search_torrent/the+walking+dead/page-1
+=======
+const HOST = 'www.torrent9.cc';
+>>>>>>> origin/master
 const URL = '%s://%s/search_torrent/%s/page-%s';
 const USER_AGENT = 'Mozilla/5.0 (Windows NT 6.1; WOW64; Trident/7.0; rv:11.0) like Gecko';
 const REG_RESULT = '#<tr>\s*<td><i[^>]*></i>\s*<a[^>]* href="(?<page>[^"]+)[^>]*>(?<title>.+)</a></td>[^>]*<td[^>]*>(?<size>[^<]+)</td>\s*<td[^>]*><span class="seed_n?ok">(?<seed>[0-9]+).*</span></td>\s*<td[^>]*>(?<leech>[0-9]+).*</td>\s*</tr>#i';
@@ -102,7 +110,11 @@ private function _parse($response){
  * Converts Torrent9 size to byte size
  */
 private static function torrent9Size($size){
+<<<<<<< HEAD
 	if (preg_match(self::REG_SIZE,$size,$m)!==1)
+=======
+	if (preg_match(self::REG_SIZE,strtolower($size),$m)!==1)
+>>>>>>> origin/master
 		return 0;
 	$unit = array_search(strtolower($m['unit']),self::SIZE);
 	return $unit===false ? 0 : round(bcmul($m['size'],bcpow(2,10*$unit)));
